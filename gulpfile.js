@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var connect = require('gulp-connect');
 var coffee = require('gulp-coffee');
 var gutil = require('gulp-util');
-var minifyHTML = require('gulp-minify-html');
+var minifyCSS = require('gulp-minify-css');
 
 gulp.task('connect', function() {
     connect.server({
@@ -19,15 +19,21 @@ gulp.task('coffee', function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch(['./src/*.html'], ['minify-html']);
+    gulp.watch(['./src/*.html'], ['copy-html']);
+    gulp.watch(['./src/css/*.css'], ['minify-css']);
     gulp.watch(['./src/scripts/*.coffee'], ['coffee']);
 });
 
-gulp.task('minify-html', function() {
-    var opts = {comments:true,spare:true};
+gulp.task('copy-html', function() {
+    var opts = {empty: true};
     gulp.src('./src/index.html')
-        .pipe(minifyHTML(opts))
         .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('minify-css', function() {
+    gulp.src('./src/css/*.css')
+        .pipe(minifyCSS({keepBreaks:false}))
+        .pipe(gulp.dest('./dist/css/'))
 });
 
 gulp.task('default', ['connect', 'watch']);
