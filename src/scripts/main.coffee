@@ -5,34 +5,53 @@ angular.module('components', [])
       link: (scope, element, attr) ->
         svg = d3.select(element[0])
           .append('svg')
-          .attr("width", 300)
-          .attr("height", 300)
 
         elem = svg.append("g")
-          .attr("transform",  "translate( 150, 150)")
+          .attr("class", "circle-translate")
 
-        circle = elem.append("circle")
+        #inner circle
+        elem.append("circle")
           .attr("r", 80)
-          .style("fill", "#F0F0F0")
 
-        text = elem.append("text")
+        #TODO: add actual text
+        progressNum = elem.append("text")
+          .attr("class", "progress-num")
           .attr("dx", -40)
           .attr("dy", 15)
-          .attr("font-size", "60px")
           .attr("textLength", "80px")
           .text('73')
 
-        text.append("tspan")
-          .attr("font-size", "30px")
+        progressNum.append("tspan")
           .text("%")
 
         elem.append("text")
-        .attr("dx", -35)
-        .attr("dy", 40)
-        .attr("font-size", "23px")
-        .attr("textLength", "80px")
-        .attr("fill", "#909090")
-        .text('Progress')
+          .attr("class", "progress-text")
+          .attr("dx", -35)
+          .attr("dy", 40)
+          .attr("textLength", "80px")
+          .text('Progress')
+
+        #actual arc
+        actualArc = d3.svg.arc()
+          .innerRadius(90)
+          .outerRadius(93)
+          .startAngle(0)
+          .endAngle((0.33/1.0) * 2 * Math.PI)
+
+        svg.append("path")
+          .attr("class", "circle-translate actual-arc")
+          .attr("d", actualArc)
+
+        #expected arc
+        expectedArc = d3.svg.arc()
+          .innerRadius(95)
+          .outerRadius(100)
+          .startAngle(0)
+          .endAngle((0.74/1.0) * 2 * Math.PI)
+
+        svg.append("path")
+          .attr("d", expectedArc)
+          .attr("class", "circle-translate expected-arc")
     }
   )
 
