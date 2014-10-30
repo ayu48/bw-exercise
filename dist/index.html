@@ -10,10 +10,13 @@
         <script type="text/javascript" src="./js/main.js"></script>
     </head>
     <body>
-        <div>
+        <div ng-controller="Controller">
             Expected: <input ng-model="expected"></br>
-            Actual: <input ng-model="actual">
+            Actual: <input ng-model="actual"></br>
+            <button ng-click="showProgress()">Show Progress</button>
+            <div>
+                <progress-indicator expected="expected" actual="actual"></progress-indicator>
+            </div>
         </div>
-        <progress-indicator></progress-indicator>
     </body>
 </html>
