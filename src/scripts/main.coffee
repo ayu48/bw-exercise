@@ -1,25 +1,29 @@
 angular.module('BWProgress', [])
   .directive('progressIndicator', ($parse)->
     return {
+      restrict: 'E'
       scope:
         expected: "="
         actual: "="
       link: (scope, element, attr) ->
-        #TODO check valid input
-        expectedNum = 1
-        actualNum = 0.23
-        percentage = actualNum/expectedNum * 100
 
         scope.$watchCollection '[expected, actual]', ([expected, actual]) ->
-          expectedNum = expected
-          actualNum = actual
-          percentage = actualNum/expectedNum * 100
-          svg.selectAll("*").remove()
-          drawProgressIndicator()
+          if isValid(expected, actual)
+            svg.selectAll("*").remove()
+            drawProgressIndicator(expected, actual)
 
         svg = d3.select(element[0]).append('svg')
 
-        drawProgressIndicator = ->
+        isValid = (expected, actual)->
+          if expected is undefined or actual is undefined
+            expected < 0 || expected > 1
+            actual < 0 || actual > 1
+            return false
+          return true
+
+        drawProgressIndicator = (expected, actual) ->
+          percentage = actual/expected * 100
+
           elem = svg.append("g")
             .attr("class", "circle-translate")
 
@@ -49,7 +53,7 @@ angular.module('BWProgress', [])
             .innerRadius(90)
             .outerRadius(93)
             .startAngle(0)
-            .endAngle((actualNum/1.0) * 2 * Math.PI)
+            .endAngle((actual/1.0) * 2 * Math.PI)
 
           svg.append("path")
             .attr("class", "circle-translate actual-arc")
@@ -60,13 +64,11 @@ angular.module('BWProgress', [])
             .innerRadius(95)
             .outerRadius(100)
             .startAngle(0)
-            .endAngle((expectedNum/1.0) * 2 * Math.PI)
+            .endAngle((expected/1.0) * 2 * Math.PI)
 
           svg.append("path")
             .attr("d", expectedArc)
             .attr("class", "circle-translate expected-arc")
-
-        drawProgressIndicator()
     }
   )
 
