@@ -16,11 +16,11 @@ angular.module('BWProgress', [])
         svg = d3.select(element[0]).append('svg')
 
         isValid = (expected, actual)->
-          if expected is undefined or actual is undefined
-            !isNaN(expected) or !isNaN(actual)
-            expected < 0 or expected > 1
+          if expected is undefined or actual is undefined or
+            isNaN(expected) or isNaN(actual) or
+            expected < 0 or expected > 1 or
             actual < 0 or actual > 1
-            return false
+              return false
           return true
 
         drawProgressIndicator = (expected, actual) ->
@@ -50,27 +50,35 @@ angular.module('BWProgress', [])
             .attr("textLength", "80px")
             .text('Progress')
 
-          #actual arc
-          actualArc = d3.svg.arc()
-            .innerRadius(90)
-            .outerRadius(93)
-            .startAngle(0)
-            .endAngle((actual/1.0) * 2 * Math.PI)
+          arcs = [
+            {
+              id: "actual-arc"
+              class: "circle-translate"
+              innerRadius: 90,
+              outerRadius: 93,
+              endAngle: parseFloat(actual)
+            },
+            {
+              id: "expected-arc"
+              class: "circle-translate"
+              innerRadius: 95,
+              outerRadius: 100,
+              endAngle: parseFloat(expected)
+            }
+          ]
 
-          svg.append("path")
-            .attr("class", "circle-translate actual-arc")
-            .attr("d", actualArc)
-
-          #expected arc
-          expectedArc = d3.svg.arc()
-            .innerRadius(95)
-            .outerRadius(100)
-            .startAngle(0)
-            .endAngle((expected/1.0) * 2 * Math.PI)
-
-          svg.append("path")
-            .attr("d", expectedArc)
-            .attr("class", "circle-translate expected-arc")
+          svg.selectAll("path.arc").data(arcs)
+            .enter().append("path")
+            .attr("id", (d) -> d.id)
+            .attr("class", (d) -> d.class)
+            .transition().duration(10000)
+            .attrTween("d", (d) ->
+              return d3.svg.arc()
+                .innerRadius(d.innerRadius)
+                .outerRadius(d.outerRadius)
+                .startAngle(0)
+                .endAngle((d.endAngle/1.0) * 2 * Math.PI)
+            )
 
     }
   )
