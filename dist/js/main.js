@@ -18,6 +18,7 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
       svg = d3.select(element[0]).append('svg');
       isValid = function(expected, actual) {
         if (expected === void 0 || actual === void 0) {
+          !isNaN(expected) || !isNaN(actual);
           expected < 0 || expected > 1;
           actual < 0 || actual > 1;
           return false;
@@ -26,7 +27,7 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
       };
       return drawProgressIndicator = function(expected, actual) {
         var actualArc, elem, expectedArc, percentage, progressNum;
-        percentage = actual / expected * 100;
+        percentage = Math.round(actual / expected * 100);
         elem = svg.append("g").attr("class", "circle-translate");
         elem.append("circle").attr("r", 80);
         progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -40).attr("dy", 15).attr("textLength", "80px").text(percentage);

@@ -11,18 +11,20 @@ angular.module('BWProgress', [])
           if isValid(expected, actual)
             svg.selectAll("*").remove()
             drawProgressIndicator(expected, actual)
+          #TODO show message
 
         svg = d3.select(element[0]).append('svg')
 
         isValid = (expected, actual)->
           if expected is undefined or actual is undefined
-            expected < 0 || expected > 1
-            actual < 0 || actual > 1
+            !isNaN(expected) or !isNaN(actual)
+            expected < 0 or expected > 1
+            actual < 0 or actual > 1
             return false
           return true
 
         drawProgressIndicator = (expected, actual) ->
-          percentage = actual/expected * 100
+          percentage = Math.round(actual/expected * 100)
 
           elem = svg.append("g")
             .attr("class", "circle-translate")
@@ -69,6 +71,7 @@ angular.module('BWProgress', [])
           svg.append("path")
             .attr("d", expectedArc)
             .attr("class", "circle-translate expected-arc")
+
     }
   )
 
