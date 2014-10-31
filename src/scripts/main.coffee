@@ -1,25 +1,23 @@
 angular.module('BWProgress', [])
-  .controller('Controller', ['$scope', ($scope) ->
-    $scope.expected = 1
-    $scope.actual = 0.23
-
-    $scope.showProgress = () ->
-      $scope.redrawProgressIndicator()
-  ])
   .directive('progressIndicator', ($parse)->
     return {
+      scope:
+        expected: "="
+        actual: "="
       link: (scope, element, attr) ->
-        actualNum = $parse(attr.actual)(scope)
-        expectedNum = $parse(attr.expected)(scope)
+        #TODO check valid input
+        expectedNum = 1
+        actualNum = 0.23
         percentage = actualNum/expectedNum * 100
-        svg = d3.select(element[0]).append('svg')
 
-        scope.redrawProgressIndicator = ->
-          actualNum = $parse(attr.actual)(scope)
-          expectedNum = $parse(attr.expected)(scope)
+        scope.$watchCollection '[expected, actual]', ([expected, actual]) ->
+          expectedNum = expected
+          actualNum = actual
           percentage = actualNum/expectedNum * 100
           svg.selectAll("*").remove()
           drawProgressIndicator()
+
+        svg = d3.select(element[0]).append('svg')
 
         drawProgressIndicator = ->
           elem = svg.append("g")

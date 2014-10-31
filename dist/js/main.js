@@ -1,26 +1,24 @@
-angular.module('BWProgress', []).controller('Controller', [
-  '$scope', function($scope) {
-    $scope.expected = 1;
-    $scope.actual = 0.23;
-    return $scope.showProgress = function() {
-      return $scope.redrawProgressIndicator();
-    };
-  }
-]).directive('progressIndicator', function($parse) {
+angular.module('BWProgress', []).directive('progressIndicator', function($parse) {
   return {
+    scope: {
+      expected: "=",
+      actual: "="
+    },
     link: function(scope, element, attr) {
       var actualNum, drawProgressIndicator, expectedNum, percentage, svg;
-      actualNum = $parse(attr.actual)(scope);
-      expectedNum = $parse(attr.expected)(scope);
+      expectedNum = 1;
+      actualNum = 0.23;
       percentage = actualNum / expectedNum * 100;
-      svg = d3.select(element[0]).append('svg');
-      scope.redrawProgressIndicator = function() {
-        actualNum = $parse(attr.actual)(scope);
-        expectedNum = $parse(attr.expected)(scope);
+      scope.$watchCollection('[expected, actual]', function(_arg) {
+        var actual, expected;
+        expected = _arg[0], actual = _arg[1];
+        expectedNum = expected;
+        actualNum = actual;
         percentage = actualNum / expectedNum * 100;
         svg.selectAll("*").remove();
         return drawProgressIndicator();
-      };
+      });
+      svg = d3.select(element[0]).append('svg');
       drawProgressIndicator = function() {
         var actualArc, elem, expectedArc, progressNum;
         elem = svg.append("g").attr("class", "circle-translate");
