@@ -49,8 +49,10 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
           return d.id;
         }).attr("class", function(d) {
           return d["class"];
-        }).transition().duration(10000).attrTween("d", function(d) {
-          return d3.svg.arc().innerRadius(d.innerRadius).outerRadius(d.outerRadius).startAngle(0).endAngle((d.endAngle / 1.0) * 2 * Math.PI);
+        }).transition().duration(800).attrTween("d", function(d) {
+          return d3.svg.arc().innerRadius(d.innerRadius).outerRadius(d.outerRadius).startAngle(0).endAngle(function(t) {
+            return t * (d.endAngle / 1) * 2 * Math.PI;
+          });
         });
       };
     }

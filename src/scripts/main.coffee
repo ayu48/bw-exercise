@@ -71,13 +71,13 @@ angular.module('BWProgress', [])
             .enter().append("path")
             .attr("id", (d) -> d.id)
             .attr("class", (d) -> d.class)
-            .transition().duration(10000)
+            .transition().duration(800)
             .attrTween("d", (d) ->
               return d3.svg.arc()
                 .innerRadius(d.innerRadius)
                 .outerRadius(d.outerRadius)
                 .startAngle(0)
-                .endAngle((d.endAngle/1.0) * 2 * Math.PI)
+                .endAngle((t) -> t * (d.endAngle/1) * 2 * Math.PI)
             )
 
     }
