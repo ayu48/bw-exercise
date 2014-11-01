@@ -10,18 +10,18 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
       scope.$watchCollection('[expected, actual]', function(_arg) {
         var actual, expected;
         expected = _arg[0], actual = _arg[1];
-        if (isValid(expected, actual)) {
+        if (expected && actual && isValid(expected, actual)) {
           svg.selectAll("*").remove();
           return drawProgressIndicator(expected, actual);
         }
       });
-      svg = d3.select(element[0]).append('svg');
       isValid = function(expected, actual) {
-        if (expected === void 0 || actual === void 0 || isNaN(expected) || isNaN(actual) || expected < 0 || expected > 1 || actual < 0 || actual > 1) {
-          return false;
+        if (!isNaN(expected) && !isNaN(actual) && expected <= 1 && expected >= 0 && actual <= 1 && actual >= 0) {
+          return true;
         }
-        return true;
+        return false;
       };
+      svg = d3.select(element[0]).append('svg');
       return drawProgressIndicator = function(expected, actual) {
         var arcs, color, elem, percentage, progressNum;
         percentage = Math.round(actual / expected * 100);

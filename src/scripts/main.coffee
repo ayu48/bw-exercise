@@ -8,20 +8,19 @@ angular.module('BWProgress', [])
       link: (scope, element, attr) ->
 
         scope.$watchCollection '[expected, actual]', ([expected, actual]) ->
-          if isValid(expected, actual)
+          if expected and actual and isValid(expected, actual)
             svg.selectAll("*").remove()
             drawProgressIndicator(expected, actual)
           #TODO show message
 
-        svg = d3.select(element[0]).append('svg')
-
         isValid = (expected, actual)->
-          if expected is undefined or actual is undefined or
-            isNaN(expected) or isNaN(actual) or
-            expected < 0 or expected > 1 or
-            actual < 0 or actual > 1
-              return false
-          return true
+          if (!isNaN(expected) and !isNaN(actual) and
+            expected <= 1 and expected >= 0 and
+            actual <= 1 and actual >= 0)
+              return true
+          return false
+
+        svg = d3.select(element[0]).append('svg')
 
         drawProgressIndicator = (expected, actual) ->
           percentage = Math.round(actual/expected * 100)
