@@ -10,13 +10,13 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
       scope.$watchCollection('[expected, actual]', function(_arg) {
         var actual, expected;
         expected = _arg[0], actual = _arg[1];
-        if (expected && actual && isValid(expected, actual)) {
+        if (isValid(expected) && isValid(actual)) {
           svg.selectAll("*").remove();
           return drawProgressIndicator(expected, actual);
         }
       });
-      isValid = function(expected, actual) {
-        if (!isNaN(expected) && !isNaN(actual) && expected <= 1 && expected >= 0 && actual <= 1 && actual >= 0) {
+      isValid = function(value) {
+        if (value && !isNaN(value) && value <= 1 && value >= 0) {
           return true;
         }
         return false;
