@@ -67,6 +67,8 @@ angular.module('BWProgress', [])
             }
           ]
 
+          color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500","#FFBA00", "#60CC00"])
+
           svg.selectAll("path.arc").data(arcs)
             .enter().append("path")
             .attr("id", (d) -> d.id)
@@ -78,7 +80,7 @@ angular.module('BWProgress', [])
                 .outerRadius(d.outerRadius)
                 .startAngle(0)
                 .endAngle((t) -> t * (d.endAngle/1) * 2 * Math.PI)
-            )
+            ).attr('fill', color(percentage))
 
     }
   )

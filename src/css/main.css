@@ -35,6 +35,5 @@ circle {
 }
 
 #expected-arc {
-    fill: #33CC00;
     stroke-width: 20px;
 }

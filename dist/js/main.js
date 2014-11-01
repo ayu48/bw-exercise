@@ -23,7 +23,7 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
         return true;
       };
       return drawProgressIndicator = function(expected, actual) {
-        var arcs, elem, percentage, progressNum;
+        var arcs, color, elem, percentage, progressNum;
         percentage = Math.round(actual / expected * 100);
         elem = svg.append("g").attr("class", "circle-translate");
         elem.append("circle").attr("r", 80);
@@ -45,6 +45,7 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
             endAngle: parseFloat(expected)
           }
         ];
+        color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500", "#FFBA00", "#60CC00"]);
         return svg.selectAll("path.arc").data(arcs).enter().append("path").attr("id", function(d) {
           return d.id;
         }).attr("class", function(d) {
@@ -53,7 +54,7 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
           return d3.svg.arc().innerRadius(d.innerRadius).outerRadius(d.outerRadius).startAngle(0).endAngle(function(t) {
             return t * (d.endAngle / 1) * 2 * Math.PI;
           });
-        });
+        }).attr('fill', color(percentage));
       };
     }
   };
