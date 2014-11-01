@@ -48,15 +48,13 @@ angular.module('BWProgress', [])
 
           arcs = [
             {
-              id: "actual-arc"
-              class: "circle-translate"
+              class: "actual-arc circle-translate"
               innerRadius: 90,
               outerRadius: 93,
               endAngle: parseFloat(actual)
             },
             {
-              id: "expected-arc"
-              class: "circle-translate"
+              class: "expected-arc circle-translate"
               innerRadius: 95,
               outerRadius: 100,
               endAngle: parseFloat(expected)
@@ -67,7 +65,6 @@ angular.module('BWProgress', [])
 
           svg.selectAll("path.arc").data(arcs)
             .enter().append("path")
-            .attr("id", (d) -> d.id)
             .attr("class", (d) -> d.class)
             .transition().duration(800)
             .attrTween("d", (d) ->
