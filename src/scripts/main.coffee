@@ -1,23 +1,37 @@
 angular.module('BWProgress', [])
-  .directive('progressIndicator', ($parse)->
+  .factory("Utilities", () ->
+    return {
+      isValid: (value) -> value and !isNaN(value) and value <= 1 and value >= 0
+    }
+  )
+  .directive('invalidMessage', (Utilities)->
+    return {
+      restrict: 'AE'
+      scope:
+        expected: '='
+        actual: '='
+      template: '<div ng-if="!valid">invalid value</div>'
+      link: (scope, element, attrs) ->
+
+        scope.$watchCollection '[expected, actual]', ([expected, actual]) ->
+          scope.valid = Utilities.isValid(expected) and Utilities.isValid(actual)
+
+        return
+  })
+  .directive('progressIndicator', (Utilities)->
     return {
       restrict: 'E'
       scope:
-        expected: "="
-        actual: "="
+        expected: '='
+        actual: '='
       link: (scope, element, attr) ->
         expected = 0
         actual = 0
 
         scope.$watchCollection '[expected, actual]', ([expected, actual]) ->
-          if isValid(expected) and isValid(actual)
+          if Utilities.isValid(expected) and Utilities.isValid(actual)
             updateIndicator(expected, actual)
             updateText(expected, actual)
-
-        isValid = (value) ->
-          if (value and !isNaN(value) and value <= 1 and value >= 0)
-            return true
-          return false
 
         getPercentage = (expected, actual) -> Math.round(actual/expected * 100)
 

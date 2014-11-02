@@ -11,9 +11,10 @@
     </head>
     <body>
         <div>
-            Expected: <input ng-model="expected"></br>
-            Actual: <input ng-model="actual">
+            Expected: <input ng-model="expected" ng-init='expected="1"'></br>
+            Actual: <input ng-model="actual" ng-init='actual="0"'>
+            <div invalid-message expected="expected" actual="actual"></div>
         </div>
-        <progress-indicator></progress-indicator>
+        <progress-indicator expected="expected" actual="actual"></progress-indicator>
     </body>
 </html>

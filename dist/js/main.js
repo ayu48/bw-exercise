@@ -1,28 +1,44 @@
-angular.module('BWProgress', []).directive('progressIndicator', function($parse) {
+angular.module('BWProgress', []).factory("Utilities", function() {
+  return {
+    isValid: function(value) {
+      return value && !isNaN(value) && value <= 1 && value >= 0;
+    }
+  };
+}).directive('invalidMessage', function(Utilities) {
+  return {
+    restrict: 'AE',
+    scope: {
+      expected: '=',
+      actual: '='
+    },
+    template: '<div ng-if="!valid">invalid value</div>',
+    link: function(scope, element, attrs) {
+      scope.$watchCollection('[expected, actual]', function(_arg) {
+        var actual, expected;
+        expected = _arg[0], actual = _arg[1];
+        return scope.valid = Utilities.isValid(expected) && Utilities.isValid(actual);
+      });
+    }
+  };
+}).directive('progressIndicator', function(Utilities) {
   return {
     restrict: 'E',
     scope: {
-      expected: "=",
-      actual: "="
+      expected: '=',
+      actual: '='
     },
     link: function(scope, element, attr) {
-      var actual, arc, arcs, color, elem, expected, getPercentage, isValid, progressNum, svg, updateIndicator, updateText;
+      var actual, arc, arcs, color, elem, expected, getPercentage, progressNum, svg, updateIndicator, updateText;
       expected = 0;
       actual = 0;
       scope.$watchCollection('[expected, actual]', function(_arg) {
         var actual, expected;
         expected = _arg[0], actual = _arg[1];
-        if (isValid(expected) && isValid(actual)) {
+        if (Utilities.isValid(expected) && Utilities.isValid(actual)) {
           updateIndicator(expected, actual);
           return updateText(expected, actual);
         }
       });
-      isValid = function(value) {
-        if (value && !isNaN(value) && value <= 1 && value >= 0) {
-          return true;
-        }
-        return false;
-      };
       getPercentage = function(expected, actual) {
         return Math.round(actual / expected * 100);
       };
