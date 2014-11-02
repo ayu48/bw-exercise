@@ -29,7 +29,7 @@ angular.module('BWProgress', []).directive('progressIndicator', function($parse)
       svg = d3.select(element[0]).append('svg');
       elem = svg.append("g").attr("class", "circle-translate");
       elem.append("circle").attr("r", 80);
-      progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -40).attr("dy", 15).attr("textLength", "85px").text(getPercentage(expected, actual));
+      progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -44).attr("dy", 15).attr("textLength", "98px").text(getPercentage(expected, actual));
       progressNum.append("tspan").text("%");
       elem.append("text").attr("class", "progress-text").attr("dx", -35).attr("dy", 40).attr("textLength", "80px").text('Progress');
       arcs = [

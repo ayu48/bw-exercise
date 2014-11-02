@@ -30,9 +30,9 @@ angular.module('BWProgress', [])
         #inner circle
         progressNum = elem.append("text")
           .attr("class", "progress-num")
-          .attr("dx", -40)
+          .attr("dx", -44)
           .attr("dy", 15)
-          .attr("textLength", "85px")
+          .attr("textLength", "98px")
           .text(getPercentage(expected, actual))
 
         progressNum.append("tspan").text("%")
@@ -67,6 +67,7 @@ angular.module('BWProgress', [])
           .outerRadius((d) -> d.outerRadius)
           .startAngle(0)
           .endAngle((d) -> (d.endAngle/1) * 2 * Math.PI)
+
 
         svg.selectAll("path.arc").data(arcs)
           .enter().append("path")
