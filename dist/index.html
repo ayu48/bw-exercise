@@ -10,8 +10,8 @@
         <script type="text/javascript" src="./js/main.js"></script>
     </head>
     <body>
-        Expected: <input ng-model="expected"></br>
-        Actual: <input ng-model="actual"></br>
+        Expected: <input ng-model="expected" ng-init='expected="1"'></br>
+        Actual: <input ng-model="actual" ng-init='actual="0"'></br>
         <div>
             <progress-indicator expected="expected" actual="actual"></progress-indicator>
         </div>
