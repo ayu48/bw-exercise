@@ -1,4 +1,4 @@
-angular.module('BWProgress', []).factory("Utilities", function() {
+angular.module('BWProgress', []).factory('Utilities', function() {
   return {
     isValid: function(value) {
       return value && !isNaN(value) && value <= 1 && value >= 0;

@@ -1,5 +1,5 @@
 angular.module('BWProgress', [])
-  .factory("Utilities", () ->
+  .factory('Utilities', () ->
     return {
       isValid: (value) -> value and !isNaN(value) and value <= 1 and value >= 0
     }
