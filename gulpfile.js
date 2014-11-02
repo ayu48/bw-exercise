@@ -3,6 +3,7 @@ var connect = require('gulp-connect');
 var coffee = require('gulp-coffee');
 var gutil = require('gulp-util');
 var minifyCSS = require('gulp-minify-css');
+var deploy = require('gulp-gh-pages');
 
 gulp.task('connect', function() {
     connect.server({
@@ -34,6 +35,12 @@ gulp.task('minify-css', function() {
     gulp.src('./src/css/*.css')
         .pipe(minifyCSS({keepBreaks:false}))
         .pipe(gulp.dest('./dist/css/'))
+});
+
+gulp.task('deploy', function () {
+        return gulp.src('./dist/**/*')
+                .pipe(deploy({push: true}));
+
 });
 
 gulp.task('default', ['connect', 'watch']);
