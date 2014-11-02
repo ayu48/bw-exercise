@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="BWApp">
+    <head>
+        <meta charset="utf-8">
+        <title>BW-Exercise</title>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="./css/main.css">
+        <script type="text/javascript" src="./js/angular.min.js"></script>
+        <script type="text/javascript" src="./js/d3.min.js"></script>
+        <script type="text/javascript" src="./js/main.js"></script>
+    </head>
+    <body>
+        <div>
+            Expected: <input ng-model="expected" ng-init='expected="1"'></br>
+            Actual: <input ng-model="actual" ng-init='actual="0"'>
+            <div invalid-message expected="expected" actual="actual"></div>
+        </div>
+        <progress-indicator expected="expected" actual="actual"></progress-indicator>
+    </body>
+</html>
