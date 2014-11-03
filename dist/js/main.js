@@ -39,13 +39,13 @@ angular.module('BWProgress', []).factory('Utilities', function() {
           return updateText(expected, actual);
         }
       });
-      getPercentage = function(expected, actual) {
-        return Math.round(actual / expected * 100);
+      getPercentage = function(value) {
+        return Math.round(value * 100);
       };
       svg = d3.select(element[0]).append('svg');
       elem = svg.append("g").attr("class", "circle-translate");
       elem.append("circle").attr("r", 80);
-      progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -44).attr("dy", 15).attr("textLength", "98px").text(getPercentage(expected, actual));
+      progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -44).attr("dy", 15).attr("textLength", "98px").text(getPercentage(actual));
       progressNum.append("tspan").text("%");
       elem.append("text").attr("class", "progress-text").attr("dx", -35).attr("dy", 40).attr("textLength", "80px").text('Progress');
       arcs = [
@@ -71,16 +71,16 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       });
       svg.selectAll("path.arc").data(arcs).enter().append("path").attr("class", function(d) {
         return d["class"];
-      }).attr('fill', color(getPercentage(expected, actual))).transition().duration(800).attrTween("d", function(d) {
+      }).attr('fill', color(getPercentage(actual))).transition().duration(800).attrTween("d", function(d) {
         return arc(d);
       });
       updateText = function(expected, actual) {
-        return progressNum.text(getPercentage(expected, actual)).append("tspan").text("%");
+        return progressNum.text(getPercentage(actual)).append("tspan").text("%");
       };
       return updateIndicator = function(expected, actual) {
         var newValue;
         newValue = [actual, expected];
-        return svg.selectAll("path").transition().duration(800).attr('fill', color(getPercentage(expected, actual))).attrTween("d", function(d, i) {
+        return svg.selectAll("path").transition().duration(800).attr('fill', color(getPercentage(actual))).attrTween("d", function(d, i) {
           var interpolate;
           interpolate = d3.interpolate(d.endAngle, newValue[i]);
           return function(t) {

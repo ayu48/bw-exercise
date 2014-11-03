@@ -29,7 +29,7 @@ describe('directives', function() {
             var element = $compile('<progress-indicator expected="expected" actual="actual"></progress-indicator>')($rootScope);
             $rootScope.$digest();
 
-            expect(element.html()).toContain('75<tspan>%</tspan>');
+            expect(element.html()).toContain('30<tspan>%</tspan>');
         });
     });
 });

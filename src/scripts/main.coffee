@@ -33,7 +33,7 @@ angular.module('BWProgress', [])
             updateIndicator(expected, actual)
             updateText(expected, actual)
 
-        getPercentage = (expected, actual) -> Math.round(actual/expected * 100)
+        getPercentage = (value) -> Math.round(value * 100)
 
         svg = d3.select(element[0]).append('svg')
         elem = svg.append("g").attr("class", "circle-translate");
@@ -47,7 +47,7 @@ angular.module('BWProgress', [])
           .attr("dx", -44)
           .attr("dy", 15)
           .attr("textLength", "98px")
-          .text(getPercentage(expected, actual))
+          .text(getPercentage(actual))
 
         progressNum.append("tspan").text("%")
 
@@ -86,20 +86,20 @@ angular.module('BWProgress', [])
         svg.selectAll("path.arc").data(arcs)
           .enter().append("path")
           .attr("class", (d) -> d.class)
-          .attr('fill', color(getPercentage(expected, actual)))
+          .attr('fill', color(getPercentage(actual)))
           .transition().duration(800)
           .attrTween("d", (d) ->
             return arc(d)
           )
 
         updateText = (expected, actual) ->
-          progressNum.text(getPercentage(expected, actual))
+          progressNum.text(getPercentage(actual))
             .append("tspan").text("%")
 
         updateIndicator = (expected, actual) ->
           newValue = [actual, expected]
           svg.selectAll("path").transition().duration(800)
-            .attr('fill', color(getPercentage(expected, actual)))
+            .attr('fill', color(getPercentage(actual)))
             .attrTween("d", (d, i) ->
               interpolate = d3.interpolate(d.endAngle, newValue[i])
               return (t) ->
