@@ -10,7 +10,7 @@ angular.module('BWProgress', [])
       scope:
         expected: '='
         actual: '='
-      template: '<div ng-if="!valid">invalid value</div>'
+      template: '<div ng-if="!valid">Invalid Value</div>'
       link: (scope, element, attrs) ->
 
         scope.$watchCollection '[expected, actual]', ([expected, actual]) ->
