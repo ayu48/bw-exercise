@@ -32,5 +32,28 @@ describe('directives', function() {
             expect(element.html()).toContain('30<tspan>%</tspan>');
         });
     });
+
+    describe('invalidMessage', function() {
+
+        it('should show message on invalid input', function() {
+            $rootScope.expected = 'weg';
+            $rootScope.actual = 33;
+
+            var element = $compile('<div invalid-message expected="expected" actual="actual"></div>')($rootScope);
+            $rootScope.$digest();
+
+            expect(element.html()).toContain('Invalid Value');
+        });
+
+        it('should not show message on valid input', function() {
+            $rootScope.expected = 0.2;
+            $rootScope.actual = 1;
+
+            var element = $compile('<div invalid-message expected="expected" actual="actual"></div>')($rootScope);
+            $rootScope.$digest();
+
+            expect(element.html()).not.toContain('Invalid Value');
+        });
+    });
 });
 
