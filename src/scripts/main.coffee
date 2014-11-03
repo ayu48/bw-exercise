@@ -59,22 +59,24 @@ angular.module('BWProgress', [])
           .text('Progress')
 
         #arcs
+        color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500","#FFBA00", "#60CC00"])
+
         arcs = [
           {
             class: "expected-arc circle-translate"
+            color: () -> '#A8A8A8'
             innerRadius: 90,
-            outerRadius: 93,
+            outerRadius: 91,
             endAngle: parseFloat(expected)
           },
           {
             class: "actual-arc circle-translate"
-            innerRadius: 95,
-            outerRadius: 100,
+            color: (actual) -> color(getPercentage(actual))
+            innerRadius: 96,
+            outerRadius: 97,
             endAngle: parseFloat(actual)
           }
         ]
-
-        color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500","#FFBA00", "#60CC00"])
 
         arc = d3.svg.arc()
           .innerRadius((d) -> d.innerRadius)
@@ -86,7 +88,9 @@ angular.module('BWProgress', [])
         svg.selectAll("path.arc").data(arcs)
           .enter().append("path")
           .attr("class", (d) -> d.class)
-          .attr('fill', color(getPercentage(actual)))
+          .attr('fill', (d) -> d.color(actual))
+          .attr('stroke', (d) -> d.color(actual))
+          .attr('stroke-linejoin', 'round')
           .transition().duration(800)
           .attrTween("d", (d) ->
             return arc(d)
@@ -99,7 +103,8 @@ angular.module('BWProgress', [])
         updateIndicator = (expected, actual) ->
           newValue = [expected, actual]
           svg.selectAll("path").transition().duration(800)
-            .attr('fill', color(getPercentage(actual)))
+            .attr('fill', (d, i) -> arcs[i].color(actual))
+            .attr('stroke', (d, i) -> arcs[i].color(actual))
             .attrTween("d", (d, i) ->
               interpolate = d3.interpolate(d.endAngle, newValue[i])
               return (t) ->

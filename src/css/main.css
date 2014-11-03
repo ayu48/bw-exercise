@@ -31,9 +31,10 @@ circle {
 }
 
 .actual-arc {
-    stroke-width: 20px;
+    stroke-width: 5px;
 }
 
 .expected-arc {
+    stroke-width: 2px;
     fill: #A8A8A8;
 }
