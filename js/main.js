@@ -1,4 +1,4 @@
-angular.module('BWProgress', []).factory("Utilities", function() {
+angular.module('BWProgress', []).factory('Utilities', function() {
   return {
     isValid: function(value) {
       return value && !isNaN(value) && value <= 1 && value >= 0;
@@ -39,29 +39,35 @@ angular.module('BWProgress', []).factory("Utilities", function() {
           return updateText(expected, actual);
         }
       });
-      getPercentage = function(expected, actual) {
-        return Math.round(actual / expected * 100);
+      getPercentage = function(value) {
+        return Math.round(value * 100);
       };
       svg = d3.select(element[0]).append('svg');
       elem = svg.append("g").attr("class", "circle-translate");
       elem.append("circle").attr("r", 80);
-      progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -44).attr("dy", 15).attr("textLength", "98px").text(getPercentage(expected, actual));
+      progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -44).attr("dy", 15).attr("textLength", "98px").text(getPercentage(actual));
       progressNum.append("tspan").text("%");
       elem.append("text").attr("class", "progress-text").attr("dx", -35).attr("dy", 40).attr("textLength", "80px").text('Progress');
+      color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500", "#FFBA00", "#60CC00"]);
       arcs = [
         {
-          "class": "actual-arc circle-translate",
-          innerRadius: 90,
-          outerRadius: 93,
-          endAngle: parseFloat(actual)
-        }, {
           "class": "expected-arc circle-translate",
-          innerRadius: 95,
-          outerRadius: 100,
+          color: function() {
+            return '#A8A8A8';
+          },
+          innerRadius: 90,
+          outerRadius: 91,
           endAngle: parseFloat(expected)
+        }, {
+          "class": "actual-arc circle-translate",
+          color: function(actual) {
+            return color(getPercentage(actual));
+          },
+          innerRadius: 96,
+          outerRadius: 97,
+          endAngle: parseFloat(actual)
         }
       ];
-      color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500", "#FFBA00", "#60CC00"]);
       arc = d3.svg.arc().innerRadius(function(d) {
         return d.innerRadius;
       }).outerRadius(function(d) {
@@ -71,16 +77,24 @@ angular.module('BWProgress', []).factory("Utilities", function() {
       });
       svg.selectAll("path.arc").data(arcs).enter().append("path").attr("class", function(d) {
         return d["class"];
-      }).attr('fill', color(getPercentage(expected, actual))).transition().duration(800).attrTween("d", function(d) {
+      }).attr('fill', function(d) {
+        return d.color(actual);
+      }).attr('stroke', function(d) {
+        return d.color(actual);
+      }).attr('stroke-linejoin', 'round').transition().duration(800).attrTween("d", function(d) {
         return arc(d);
       });
       updateText = function(expected, actual) {
-        return progressNum.text(getPercentage(expected, actual)).append("tspan").text("%");
+        return progressNum.text(getPercentage(actual)).append("tspan").text("%");
       };
       return updateIndicator = function(expected, actual) {
         var newValue;
-        newValue = [actual, expected];
-        return svg.selectAll("path").transition().duration(800).attr('fill', color(getPercentage(expected, actual))).attrTween("d", function(d, i) {
+        newValue = [expected, actual];
+        return svg.selectAll("path").transition().duration(800).attr('fill', function(d, i) {
+          return arcs[i].color(actual);
+        }).attr('stroke', function(d, i) {
+          return arcs[i].color(actual);
+        }).attrTween("d", function(d, i) {
           var interpolate;
           interpolate = d3.interpolate(d.endAngle, newValue[i]);
           return function(t) {
