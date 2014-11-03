@@ -61,16 +61,16 @@ angular.module('BWProgress', [])
         #arcs
         arcs = [
           {
-            class: "actual-arc circle-translate"
+            class: "expected-arc circle-translate"
             innerRadius: 90,
             outerRadius: 93,
-            endAngle: parseFloat(actual)
+            endAngle: parseFloat(expected)
           },
           {
-            class: "expected-arc circle-translate"
+            class: "actual-arc circle-translate"
             innerRadius: 95,
             outerRadius: 100,
-            endAngle: parseFloat(expected)
+            endAngle: parseFloat(actual)
           }
         ]
 
@@ -97,7 +97,7 @@ angular.module('BWProgress', [])
             .append("tspan").text("%")
 
         updateIndicator = (expected, actual) ->
-          newValue = [actual, expected]
+          newValue = [expected, actual]
           svg.selectAll("path").transition().duration(800)
             .attr('fill', color(getPercentage(actual)))
             .attrTween("d", (d, i) ->

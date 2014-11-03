@@ -50,15 +50,15 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       elem.append("text").attr("class", "progress-text").attr("dx", -35).attr("dy", 40).attr("textLength", "80px").text('Progress');
       arcs = [
         {
-          "class": "actual-arc circle-translate",
+          "class": "expected-arc circle-translate",
           innerRadius: 90,
           outerRadius: 93,
-          endAngle: parseFloat(actual)
+          endAngle: parseFloat(expected)
         }, {
-          "class": "expected-arc circle-translate",
+          "class": "actual-arc circle-translate",
           innerRadius: 95,
           outerRadius: 100,
-          endAngle: parseFloat(expected)
+          endAngle: parseFloat(actual)
         }
       ];
       color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500", "#FFBA00", "#60CC00"]);
@@ -79,7 +79,7 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       };
       return updateIndicator = function(expected, actual) {
         var newValue;
-        newValue = [actual, expected];
+        newValue = [expected, actual];
         return svg.selectAll("path").transition().duration(800).attr('fill', color(getPercentage(actual))).attrTween("d", function(d, i) {
           var interpolate;
           interpolate = d3.interpolate(d.endAngle, newValue[i]);
