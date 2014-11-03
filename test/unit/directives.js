@@ -31,6 +31,19 @@ describe('directives', function() {
 
             expect(element.html()).toContain('30<tspan>%</tspan>');
         });
+
+        it('should turn green if actual is 100%', function(done) {
+            $rootScope.expected = 1;
+            $rootScope.actual = 1;
+
+            var element = $compile('<progress-indicator expected="expected" actual="actual"></progress-indicator>')($rootScope);
+            $rootScope.$digest();
+            setTimeout(function() {
+                expect(element[0].querySelector('.actual-arc').getAttribute('fill')).toEqual("#60cc00");
+                done();
+            }, 900)
+
+        })
     });
 
     describe('invalidMessage', function() {
