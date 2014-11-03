@@ -42,8 +42,20 @@ describe('directives', function() {
                 expect(element[0].querySelector('.actual-arc').getAttribute('fill')).toEqual("#60cc00");
                 done();
             }, 900)
-
         })
+
+        it('draws half a circle when 50%', function(done) {
+            $rootScope.expected = 1;
+            $rootScope.actual = 0.5;
+
+            var element = $compile('<progress-indicator expected="expected" actual="actual"></progress-indicator>')($rootScope);
+            $rootScope.$digest();
+            setTimeout(function() {
+                expect(element[0].querySelector('.actual-arc').getAttribute('d')).toEqual("M5.939536975864663e-15,-97A97,97 0 1,1 5.939536975864663e-15,97L5.878304635907295e-15,96A96,96 0 1,0 5.878304635907295e-15,-96Z");
+                done();
+            }, 900)
+        });
+
     });
 
     describe('invalidMessage', function() {
