@@ -11,7 +11,7 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       expected: '=',
       actual: '='
     },
-    template: '<div ng-if="!valid">invalid value</div>',
+    template: '<div ng-if="!valid">Invalid Value</div>',
     link: function(scope, element, attrs) {
       scope.$watchCollection('[expected, actual]', function(_arg) {
         var actual, expected;
