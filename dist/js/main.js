@@ -45,9 +45,9 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       svg = d3.select(element[0]).append('svg');
       elem = svg.append("g").attr("class", "circle-translate");
       elem.append("circle").attr("r", 80);
-      progressNum = elem.append("text").attr("class", "progress-num").attr("dx", -44).attr("dy", 15).attr("textLength", "98px").text(getPercentage(actual));
+      progressNum = elem.append("text").attr("class", "progress-num").attr("x", 5).attr("y", 10).attr("text-anchor", "middle").text(getPercentage(actual));
       progressNum.append("tspan").text("%");
-      elem.append("text").attr("class", "progress-text").attr("dx", -35).attr("dy", 40).attr("textLength", "80px").text('Progress');
+      elem.append("text").attr("class", "progress-text").attr("x", 5).attr("y", 40).attr("text-anchor", "middle").text('Progress');
       color = d3.scale.linear().domain([0, 60, 100]).range(["#D91500", "#FFBA00", "#60CC00"]);
       arcs = [
         {

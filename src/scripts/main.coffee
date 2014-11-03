@@ -44,18 +44,18 @@ angular.module('BWProgress', [])
         #inner circle
         progressNum = elem.append("text")
           .attr("class", "progress-num")
-          .attr("dx", -44)
-          .attr("dy", 15)
-          .attr("textLength", "98px")
+          .attr("x", 5)
+          .attr("y", 10)
+          .attr("text-anchor", "middle")
           .text(getPercentage(actual))
 
         progressNum.append("tspan").text("%")
 
         elem.append("text")
           .attr("class", "progress-text")
-          .attr("dx", -35)
-          .attr("dy", 40)
-          .attr("textLength", "80px")
+          .attr("x", 5)
+          .attr("y", 40)
+          .attr("text-anchor", "middle")
           .text('Progress')
 
         #arcs

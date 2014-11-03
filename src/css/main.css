@@ -10,6 +10,7 @@ svg {
     height: 300px;
 }
 
+
 circle {
     fill: #F0F0F0;
 }
@@ -27,7 +28,7 @@ circle {
 }
 
 .progress-text {
-    font-size: 23px;
+    font-size: 25px;
     fill: #909090;
 }
 
