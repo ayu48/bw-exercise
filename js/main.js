@@ -28,7 +28,10 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       actual: '='
     },
     link: function(scope, element, attr) {
-      var actual, arc, arcs, color, elem, expected, getPercentage, progressNum, svg, updateIndicator, updateText;
+      var actual, arc, arcs, color, elem, expected, getPercentage, progressNum, scale, size, svg, transform, updateIndicator, updateText;
+      size = attr.size || 200;
+      scale = size / 200;
+      transform = 'scale(' + scale + ') translate( 100px, 100px)';
       expected = 0;
       actual = 0;
       scope.$watchCollection('[expected, actual]', function(_arg) {
@@ -42,8 +45,8 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       getPercentage = function(value) {
         return Math.round(value * 100);
       };
-      svg = d3.select(element[0]).append('svg');
-      elem = svg.append("g").attr("class", "circle-translate");
+      svg = d3.select(element[0]).append('svg').attr("width", size).attr("height", size);
+      elem = svg.append("g").style("transform", transform);
       elem.append("circle").attr("r", 80);
       progressNum = elem.append("text").attr("class", "progress-num").attr("x", 5).attr("y", 10).attr("text-anchor", "middle").text(getPercentage(actual));
       progressNum.append("tspan").text("%");
@@ -81,7 +84,7 @@ angular.module('BWProgress', []).factory('Utilities', function() {
         return d.color(actual);
       }).attr('stroke', function(d) {
         return d.color(actual);
-      }).attr('stroke-linejoin', 'round').transition().duration(800).attrTween("d", function(d) {
+      }).attr('stroke-linejoin', 'round').style('transform', transform).transition().duration(800).attrTween("d", function(d) {
         return arc(d);
       });
       updateText = function(expected, actual) {
