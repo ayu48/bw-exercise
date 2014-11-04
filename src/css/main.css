@@ -5,6 +5,10 @@ html,body {
     background-color: #FAFAFA;
 }
 
+svg {
+    margin: 30px;
+}
+
 circle {
     fill: #F0F0F0;
 }
