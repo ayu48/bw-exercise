@@ -5,18 +5,8 @@ html,body {
     background-color: #FAFAFA;
 }
 
-svg {
-    width: 300px;
-    height: 300px;
-}
-
-
 circle {
     fill: #F0F0F0;
-}
-
-.circle-translate {
-    transform: translate(150px, 150px);
 }
 
 .progress-num {

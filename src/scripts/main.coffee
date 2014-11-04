@@ -25,6 +25,9 @@ angular.module('BWProgress', [])
         expected: '='
         actual: '='
       link: (scope, element, attr) ->
+        size = attr.size || 200
+        scale = size/200
+        transform = 'scale(' + scale + ') translate( 100px, 100px)'
         expected = 0
         actual = 0
 
@@ -36,7 +39,10 @@ angular.module('BWProgress', [])
         getPercentage = (value) -> Math.round(value * 100)
 
         svg = d3.select(element[0]).append('svg')
-        elem = svg.append("g").attr("class", "circle-translate");
+          .attr("width", size)
+          .attr("height", size)
+        elem = svg.append("g")
+          .style("transform", transform)
 
         #inner circle
         elem.append("circle").attr("r", 80)
@@ -91,6 +97,7 @@ angular.module('BWProgress', [])
           .attr('fill', (d) -> d.color(actual))
           .attr('stroke', (d) -> d.color(actual))
           .attr('stroke-linejoin', 'round')
+          .style('transform', transform)
           .transition().duration(800)
           .attrTween("d", (d) ->
             return arc(d)
