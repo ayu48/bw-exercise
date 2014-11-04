@@ -84,6 +84,12 @@ angular.module('BWProgress', []).factory('Utilities', function() {
         return d.color(actual / expected);
       }).attr('stroke', function(d) {
         return d.color(actual / expected);
+      }).attr('opacity', function(d) {
+        if (d.endAngle === 0) {
+          return 0;
+        } else {
+          return 1;
+        }
       }).attr('stroke-linejoin', 'round').style('transform', transform).transition().duration(800).attrTween("d", function(d) {
         return arc(d);
       });
@@ -92,11 +98,17 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       };
       return updateIndicator = function(expected, actual) {
         var newValue;
-        newValue = [expected, actual];
+        newValue = [parseFloat(expected), parseFloat(actual)];
         return svg.selectAll("path").transition().duration(800).attr('fill', function(d, i) {
           return arcs[i].color(actual / expected);
         }).attr('stroke', function(d, i) {
           return arcs[i].color(actual / expected);
+        }).style('opacity', function(d, i) {
+          if (newValue[i] === 0) {
+            return 0;
+          } else {
+            return 1;
+          }
         }).attrTween("d", function(d, i) {
           var interpolate;
           interpolate = d3.interpolate(d.endAngle, newValue[i]);
