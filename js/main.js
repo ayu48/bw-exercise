@@ -63,8 +63,8 @@ angular.module('BWProgress', []).factory('Utilities', function() {
           endAngle: parseFloat(expected)
         }, {
           "class": "actual-arc circle-translate",
-          color: function(actual) {
-            return color(getPercentage(actual));
+          color: function(value) {
+            return color(getPercentage(value));
           },
           innerRadius: 96,
           outerRadius: 97,
@@ -81,9 +81,9 @@ angular.module('BWProgress', []).factory('Utilities', function() {
       svg.selectAll("path.arc").data(arcs).enter().append("path").attr("class", function(d) {
         return d["class"];
       }).attr('fill', function(d) {
-        return d.color(actual);
+        return d.color(actual / expected);
       }).attr('stroke', function(d) {
-        return d.color(actual);
+        return d.color(actual / expected);
       }).attr('stroke-linejoin', 'round').style('transform', transform).transition().duration(800).attrTween("d", function(d) {
         return arc(d);
       });
@@ -94,9 +94,9 @@ angular.module('BWProgress', []).factory('Utilities', function() {
         var newValue;
         newValue = [expected, actual];
         return svg.selectAll("path").transition().duration(800).attr('fill', function(d, i) {
-          return arcs[i].color(actual);
+          return arcs[i].color(actual / expected);
         }).attr('stroke', function(d, i) {
-          return arcs[i].color(actual);
+          return arcs[i].color(actual / expected);
         }).attrTween("d", function(d, i) {
           var interpolate;
           interpolate = d3.interpolate(d.endAngle, newValue[i]);
