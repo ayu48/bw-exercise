@@ -96,6 +96,7 @@ angular.module('BWProgress', [])
           .attr("class", (d) -> d.class)
           .attr('fill', (d) -> d.color(actual/expected))
           .attr('stroke', (d) -> d.color(actual/expected))
+          .attr('opacity', (d) -> if d.endAngle is 0 then 0 else 1)
           .attr('stroke-linejoin', 'round')
           .style('transform', transform)
           .transition().duration(800)
@@ -108,10 +109,11 @@ angular.module('BWProgress', [])
             .append("tspan").text("%")
 
         updateIndicator = (expected, actual) ->
-          newValue = [expected, actual]
+          newValue = [parseFloat(expected), parseFloat(actual)]
           svg.selectAll("path").transition().duration(800)
             .attr('fill', (d, i) -> arcs[i].color(actual/expected))
             .attr('stroke', (d, i) -> arcs[i].color(actual/expected))
+            .style('opacity', (d, i) -> if newValue[i] is 0 then 0 else 1)
             .attrTween("d", (d, i) ->
               interpolate = d3.interpolate(d.endAngle, newValue[i])
               return (t) ->
